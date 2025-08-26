@@ -18,10 +18,9 @@ jobs:
 
     - name: Get latest GeoJSON filename
       run: |
-        curl -s https://api.github.com/repos/cyterat/deepstate-map-data/contents/data/deepstatemap_data_20240813.geojson
+        curl -s https://api.github.com/repos/cyterat/deepstate-map-data/contents/data/deepstatemap_data_20240813.geojson > latest.txt
       #  | grep -oP '"name":\s*"\K[0-9]{4}-[0-9]{2}-[0-9]{2}\.geojson' \
       #  | sort | tail -n 1 > latest.txt
-      > latest.txt
 
     - name: Download latest GeoJSON
       run: |
