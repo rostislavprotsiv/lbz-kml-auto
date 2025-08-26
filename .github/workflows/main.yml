@@ -26,7 +26,7 @@ jobs:
       run: |
         FILE=$(cat latest.txt)
         echo "Downloading $FILE"
-        curl -L "https://github.com/cyterat/deepstate-map-data/raw/main/data/$FILE" -o lbz.geojson
+        curl -L "https://github.com/cyterat/deepstate-map-data/raw/main/data/deepstatemap_data_20240813.geojson" -o lbz.geojson
 
     - name: Convert GeoJSON to KML
       run: |
