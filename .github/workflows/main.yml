@@ -18,9 +18,9 @@ jobs:
 
     - name: Get latest GeoJSON filename
       run: |
-        curl -s https://api.github.com/repos/cyterat/deepstate-map-data/contents/data \
+        curl -s https://api.github.com/repos/cyterat/deepstate-map-data/data \
         | jq -r '.[].name' \
-        | grep -E '^[0-9]{4}-[0-9]{2}-[0-9]{2}\.geojson$' \
+        | grep -E '^deepstatemap_data_[0-9]{4}-[0-9]{2}-[0-9]{2}\.geojson$' \
         | sort | tail -n 1 > latest.txt
         echo "Latest file: $(cat latest.txt)"
 
@@ -28,7 +28,7 @@ jobs:
       run: |
         FILE=$(cat latest.txt)
         echo "Downloading $FILE"
-        curl -L "https://github.com/cyterat/deepstate-map-data/raw/main/data/$FILE" -o lbz.geojson
+        curl -L "https://github.com/cyterat/deepstate-map-data/data/$FILE" -o lbz.geojson
         
     - name: Debug files
       run: |
