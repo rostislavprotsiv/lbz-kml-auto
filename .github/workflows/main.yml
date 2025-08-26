@@ -16,13 +16,10 @@ jobs:
     - name: Install GDAL
       run: sudo apt-get update && sudo apt-get install -y gdal-bin
 
+
     - name: Get latest GeoJSON filename
       run: |
-        curl -s https://api.github.com/repos/cyterat/deepstate-map-data/data \
-        | jq -r '.[].name' \
-        | grep -E '^deepstatemap_data_[0-9]{4}-[0-9]{2}-[0-9]{2}\.geojson$' \
-        | sort | tail -n 1 > latest.txt
-        echo "Latest file: $(cat latest.txt)"
+        curl -s https://api.github.com/repos/cyterat/deepstate-map-data/contents/data/deepstatemap_data_20240708.geojson > latest.txt
 
     - name: Download latest GeoJSON
       run: |
