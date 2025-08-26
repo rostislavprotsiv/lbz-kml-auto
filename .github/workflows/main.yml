@@ -14,7 +14,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Install GDAL
-      run: sudo apt-get update && sudo apt-get install -y software-properties-common && sudo add-apt-repository universe && sudo apt-get install -y gdal-bin
+      run: sudo apt-get update && sudo apt-get install -y gdal-bin
 
     - name: Get latest GeoJSON filename
       run: |
@@ -27,7 +27,13 @@ jobs:
         FILE=$(cat latest.txt)
         echo "Downloading $FILE"
         curl -L "https://github.com/cyterat/deepstate-map-data/raw/main/data/$FILE" -o lbz.geojson
-
+        
+    - name: Debug files
+      run: |
+        ls -lh
+        file lbz.geojson || true
+        head -n 20 lbz.geojson || true
+        
     - name: Convert GeoJSON to KML
       run: |
         ogr2ogr -f "KML" lbz.kml lbz.geojson
