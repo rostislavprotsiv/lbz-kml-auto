@@ -1,1 +1,42 @@
+name: Convert DeepState GeoJSON to KML
 
+on:
+  schedule:
+    - cron: "0 3 * * *"   # запуск щодня о 03:00 UTC
+  workflow_dispatch:       # можливість запустити вручну
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Install GDAL
+      run: sudo apt-get update && sudo apt-get install -y gdal-bin
+
+    - name: Get latest GeoJSON filename
+      run: |
+        curl -s https://api.github.com/repos/cyterat/deepstate-map-data/contents/data/deepstatemap_data_20240813.geojson
+      #  | grep -oP '"name":\s*"\K[0-9]{4}-[0-9]{2}-[0-9]{2}\.geojson' \
+      #  | sort | tail -n 1 > latest.txt
+      > latest.txt
+
+    - name: Download latest GeoJSON
+      run: |
+        FILE=$(cat latest.txt)
+        echo "Downloading $FILE"
+        curl -L "https://github.com/cyterat/deepstate-map-data/raw/main/data/$FILE" -o lbz.geojson
+
+    - name: Convert GeoJSON to KML
+      run: |
+        ogr2ogr -f "KML" lbz.kml lbz.geojson
+
+    - name: Commit and push KML
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "actions@github.com"
+        git add lbz.kml
+        git commit -m "Update LBZ.kml $(date -u)"
+        git push
