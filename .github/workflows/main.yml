@@ -30,7 +30,8 @@ jobs:
 
     - name: Convert GeoJSON to KML
       run: |
-        ogr2ogr -f "KML" lbz.kml lbz.geojson
+        # Створюємо окремі Placemark для кожного полігону
+        ogr2ogr -f "KML" lbz.kml lbz.geojson -nlt POLYGON -explodecollections
 
     - name: Commit and push KML
       run: |
